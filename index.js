@@ -2,16 +2,19 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dbConnect = require('./db/db.connect');
+const videoRoute = require('./routes/video.router');
+
+const Video = require('./models/video.model');
 
 dbConnect();
 
 const app = express();
 
-const Video = require('./models/video.model');
-
 app.use(cors());
 
 app.use(express.json());
+
+app.use('/video', videoRoute);
 
 app.get('/', async (req, res) => {
   try {
