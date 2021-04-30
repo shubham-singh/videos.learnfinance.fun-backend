@@ -16,7 +16,6 @@ app.use(express.json());
 app.get('/', async (req, res) => {
   try {
     const videos = await Video.find({});
-    console.log(videos);
     res.json({success: true, videos})
   } catch (error) {
     res.json({success: false, errorMessage: error.message});
