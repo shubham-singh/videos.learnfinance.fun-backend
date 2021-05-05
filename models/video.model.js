@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const { Schema } = require('mongoose');
 
 const VideoSchema = new Schema({
+  title: {
+    type: String,
+    required: [true, 'Video title is required']
+  },
   youtubeId: {
     type: String,
     required: [true, 'Youtube ID is required']
