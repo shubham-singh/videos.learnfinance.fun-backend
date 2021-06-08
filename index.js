@@ -1,12 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const dbConnect = require('./db/db.connect');
-const videoRoute = require('./routes/video.router');
 
-const Video = require('./models/video.model');
-
-dbConnect();
+const authRoutes = require('./routes/auth.route.js');
+const videoRoutes = require('./routes/video.route.js');
 
 const app = express();
 
@@ -14,30 +11,16 @@ app.use(cors());
 
 app.use(express.json());
 
-app.use('/video', videoRoute);
 
-app.get('/', async (req, res) => {
-  try {
-    const videos = await Video.find({});
-    res.json({success: true, videos})
-  } catch (error) {
-    res.json({success: false, errorMessage: error.message});
-  }
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'Welcome to Learn Finance API'
+  })
 })
 
-app.post('/', async (req, res) => {
-  try {
-    const video = req.body;
-    const NewVideo = new Video(video);
-    const savedVideo = await NewVideo.save();
-    res.json({success: true, video: savedVideo})
-  } catch(err) {
-    res.status(500).json({
-      success: false,
-      message: 'Unable to add product',
-      errorMessage: err.message  
-    })
-  }
-})
+app.use('/video', videoRoutes);
+
+app.use('/user', authRoutes);
 
 app.listen(process.env.PORT || 3000, '0.0.0.0');

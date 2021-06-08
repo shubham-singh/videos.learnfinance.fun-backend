@@ -1,20 +1,23 @@
 const mongoose = require('mongoose');
 
-const username = process.env['username'];
-const password = process.env['password'];
+const dbURI = process.env['dbURI'];
 
-const dbURI = `mongodb+srv://${username}:${password}@neog-cluster.wiph4.mongodb.net/videos`;
+const { videoSchema } = require('../models/video.model.js');
+const { playlistSchema } = require('../models/playlist.model.js');
+const { likeSchema } = require('../models/like.model.js');
+const { historySchema } = require('../models/history.model.js'); 
 
-const dbConnect = async () => {
-  try {
-    const connection = await mongoose.connect(dbURI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
-    console.log("Successfully connected to database");
-  } catch (error) {
-    console.error("Database connection failed")
-  }
-}
 
-module.exports = dbConnect;
+const dbConnect = mongoose.createConnection(dbURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+  useFindAndModify: true
+})
+
+const Video = dbConnect.model('video', videoSchema);
+const Playlist = dbConnect.model('playlist', playlistSchema);
+const Like = dbConnect.model('like', likeSchema);
+const History = dbConnect.model('history', historySchema);
+
+module.exports = { dbConnect, Video, Playlist, Like, History };

@@ -1,25 +1,22 @@
 const express = require('express');
 const router = express.Router();
+
 const Video = require('../models/video.model');
+const { getAllVideos, addVideo, getVideo } = require('../controllers/video.controller.js');
 
 router.param('videoId', async (req, res, next ,id) => {
   try {
-    const video = await Video.findById(id);
-    if(!video) {
-      return res.status(404).json({success: false, message: "video not found"})
-    } 
-    req.video = video;
+    req.videoID = id;
     next()
   } catch (error) {
     res.status(400).json({success: false, message: "could not retrieve video"})
   }
 })
 
-router.route('/:videoId')
-.get((req, res) => {
-  let { video } = req;
-  video.__v = undefined;
-  res.json({success: true, video })
-})
+router
+.get('/', getAllVideos)
+.post('/', addVideo)
+.get('/:videoId', getVideo)
+
 
 module.exports = router;
