@@ -44,9 +44,8 @@ const addVideo = async (req, res) => {
 const getVideo = async (req, res) => {
   try {
 
-    const { videoId } = req;
-
-    const video = await Video.findById(videoId);
+    const { videoID } = req;
+    const video = await Video.findById(videoID);
 
     if(!video) {
       return res.status(404).json({success: false, message: "video not found"})
