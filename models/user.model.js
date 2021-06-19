@@ -9,17 +9,24 @@ const userSchema = new Schema({
     required: [true, 'Email is required'],
     unique: true,
     lowercase: true,
+    trim: true,
     validate: [isEmail, 'Please enter a valid email']
   },
   password: {
     type: String,
     required: [true, 'Please enter password'],
     select: false,
+    trim: true,
     minlength: [6, 'Minimum password length is 6 characters']
   },
-  name: {
+  firstName: {
     type: String, 
+    trim: true,
     required: [true, 'Name is required']
+  },
+  lastName: {
+    type: String, 
+    trim: true
   }
 });
 
@@ -36,9 +43,9 @@ userSchema.statics.login = async function(email, password) {
     if(auth) {
       return user;
     }
-    throw Error('incorrect password');
+    throw Error('Incorrect password');
   }
-  throw Error('incorrect email');
+  throw Error('Incorrect email');
 }
 
 module.exports = { userSchema };

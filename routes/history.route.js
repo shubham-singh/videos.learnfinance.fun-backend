@@ -6,6 +6,6 @@ const { getHistory, addToHistory, clearHistory } = require('../controllers/histo
 router
 .get('/', getHistory)
 .post('/', addToHistory)
-.get('/clear', clearHistory)
+.delete('/clear', clearHistory)
 
 module.exports = router;

@@ -16,7 +16,6 @@ const playlistSchema = new Schema({
     unique: true
   },
   playlists: [playlist]
-
 });
 
 module.exports = { playlistSchema }

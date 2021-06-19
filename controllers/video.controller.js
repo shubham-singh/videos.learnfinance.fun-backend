@@ -68,4 +68,19 @@ const getVideo = async (req, res) => {
   }
 }
 
-module.exports = { getAllVideos, addVideo, getVideo }
+const incrementViewCount = async (req, res) => {
+  try {
+    const { videoID } = req;
+    const filter = { _id: videoID };
+    const update = { $inc: { 'statistics.viewCount': 1 } }
+    await Video.findOneAndUpdate(filter, update);
+    res.status(204).send();
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error: error.message
+    })
+  }
+}
+
+module.exports = { getAllVideos, addVideo, getVideo, incrementViewCount }

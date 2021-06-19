@@ -1,11 +1,11 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 
 const authRoutes = require('./routes/auth.route.js');
 const videoRoutes = require('./routes/video.route.js');
 const rateRoutes = require('./routes/rating.route.js');
 const historyRoutes = require('./routes/history.route.js');
+const playlistRoutes = require('./routes/playlist.route.js');
 
 const { checkUser } = require('./middleware/auth.middleware.js');
 
@@ -32,5 +32,7 @@ app.use(checkUser);
 app.use('/video/rate', rateRoutes);
 
 app.use('/history', historyRoutes);
+
+app.use('/playlist', playlistRoutes);
 
 app.listen(process.env.PORT || 3000, '0.0.0.0');
