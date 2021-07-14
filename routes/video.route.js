@@ -12,13 +12,10 @@ router.param('videoId', async (req, res, next ,id) => {
     res.status(400).json({success: false, message: "could not retrieve video"})
   }
 })
-
 router
 .get('/', getAllVideos)
 .post('/', addVideo)
 .get('/:videoId', getVideo)
 .get('/:videoId/view', incrementViewCount)
-
-
 
 module.exports = router;

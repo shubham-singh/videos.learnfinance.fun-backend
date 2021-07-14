@@ -1,40 +1,36 @@
 const { Rating, Video } = require('../db/db.connect.js')
 
-const unlikeVideo = async (req, res) => {
+const getRatings = async (req, res) => {
   try {
 
     const rating = await Rating.findOne({
       user_id: req.user.userID
-    })
+    }).populate('likes dislikes')
 
-    const { videoID } = req.body;
-
-    const filter = { _id: videoID }
-
-    const update = { $inc: { 'statistics.likeCount': -1 } }
-
-    rating.likes.pull(videoID);
-
-    await rating.save();
-
-    const video = await Video.findOneAndUpdate(filter, update, { new: true });
+    if (rating === null) {
+      return res.status(200).json({
+        success: true,
+        rating: {
+          likes: [],
+          dislikes: []
+        }
+      })
+    }
 
     res.status(200).json({
       success: true,
-      rating,
-      video
+      rating
     })
 
   } catch (error) {
-
     res.status(400).json({
       success: false,
       message: error.message
     })
 
   }
-}
 
+}
 
 const likeVideo = async (req, res) => {
   try {
@@ -89,6 +85,41 @@ const likeVideo = async (req, res) => {
     res.status(400).json({
       success: false,
       error: error.message
+    })
+
+  }
+}
+
+const unlikeVideo = async (req, res) => {
+  try {
+
+    const rating = await Rating.findOne({
+      user_id: req.user.userID
+    })
+
+    const { videoID } = req.body;
+
+    const filter = { _id: videoID }
+
+    const update = { $inc: { 'statistics.likeCount': -1 } }
+
+    rating.likes.pull(videoID);
+
+    await rating.save();
+
+    const video = await Video.findOneAndUpdate(filter, update, { new: true });
+
+    res.status(200).json({
+      success: true,
+      rating,
+      video
+    })
+
+  } catch (error) {
+
+    res.status(400).json({
+      success: false,
+      message: error.message
     })
 
   }
@@ -161,4 +192,4 @@ const unDislikeVideo = async (req, res) => {
 }
 
 
-module.exports = { likeVideo, unlikeVideo, dislikeVideo, unDislikeVideo }
+module.exports = { getRatings, likeVideo, unlikeVideo, dislikeVideo, unDislikeVideo }

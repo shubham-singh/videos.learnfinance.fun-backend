@@ -10,7 +10,6 @@ const getAllVideos = async (req, res) => {
     })
   
   } catch (error) {
-
     res.status(400).json({
       success: false, 
       error: error.message
@@ -59,7 +58,6 @@ const getVideo = async (req, res) => {
     })
 
   } catch (error) {
-
     res.status(400).json({
       success: false, 
       message: "could not retrieve video"

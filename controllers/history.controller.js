@@ -4,7 +4,7 @@ const getHistory = async (req, res) => {
   try {
     const history = await History.findOne({
       user_id: req.user.userID
-    })
+    }).populate("history");
 
     if (history === null) {
       return res.status(200).json({
