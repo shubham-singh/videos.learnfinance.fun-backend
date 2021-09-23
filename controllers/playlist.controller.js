@@ -111,4 +111,24 @@ const addToPlaylist = async (req, res) => {
   }
 }
 
-module.exports = { getPlaylist, getAllPlaylists ,createPlaylist, addToPlaylist }
+const deletePlaylist = async (req, res) => {
+  try {
+    const { playlistID } = req;
+    const playlist = await Playlist.findOne({
+      user_id: req.user.userID
+    });
+    playlist.playlists.pull({_id: playlistID});
+    await playlist.save();
+    res.status(200).json({
+      success: true,
+      playlistID
+    })
+  } catch (error) {
+    res.status(200).json({
+      success: false,
+      error: error.message
+    })
+  }
+}
+
+module.exports = { getPlaylist, getAllPlaylists ,createPlaylist, addToPlaylist, deletePlaylist }
